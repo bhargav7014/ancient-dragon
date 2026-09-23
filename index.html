@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#04091a" />
+  <meta name="description" content="Witness the cosmic evolution of the Ancient Dragon — a scroll-driven 3D cinematic experience." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <title>DRACONIS — Cosmic Dragon Lore</title>
+</head>
+<body>
+  <div id="app">
+
+    <!-- ── PRELOADER ─────────────────────────────────────────────── -->
+    <div class="loader" id="loader">
+      <div class="loader-rune">✦</div>
+      <div class="loader-mark">DRACONIS</div>
+      <div class="loader-track"><span id="loaderBar"></span></div>
+      <div class="loader-copy" id="loaderCopy">Awakening the celestial beast… 0%</div>
+    </div>
+
+    <!-- ── FIXED 3D CANVAS BACKGROUND ────────────────────────────── -->
+    <div class="canvas-container" id="canvasContainer">
+      <canvas id="dragonCanvas" aria-label="Ancient cosmic dragon 3D animation"></canvas>
+      <div class="canvas-vignette"></div>
+      <div class="canvas-glow"></div>
+    </div>
+
+    <!-- ── HEADER NAVIGATION ─────────────────────────────────────── -->
+    <header class="nav" id="nav">
+      <div class="brand">
+        <span class="brand-rune">✦</span>
+        <span class="brand-text">DRACONIS</span>
+      </div>
+      <nav class="nav-links">
+        <a href="#hero" class="nav-link active">Origin</a>
+        <a href="#forms" class="nav-link">Forms</a>
+        <a href="#power" class="nav-link">Power</a>
+        <a href="#cosmos" class="nav-link">Cosmos</a>
+      </nav>
+      <a href="#forms" class="nav-cta">Explore Lore</a>
+    </header>
+
+    <!-- ── FIXED OVERLAY CONTROLS (Hero Phase & Frame Readout) ────── -->
+    <div class="hero-overlay" id="heroOverlay">
+      <!-- Live Stage Indicator -->
+      <div class="stage-indicator">
+        <span class="stage-pill" id="stagePill">STAGE 01</span>
+        <span class="stage-title" id="stageTitle">PRIMORDIAL GUARDIAN</span>
+      </div>
+
+      <!-- Live Frame Counter & Hero Progress -->
+      <div class="frame-counter">
+        <div class="frame-num-wrap">
+          <span class="frame-cur" id="frameNumber">007</span>
+          <span class="frame-sep">/</span>
+          <span class="frame-tot">270</span>
+        </div>
+        <div class="frame-sub">SCROLL CONTROLLED</div>
+      </div>
+    </div>
+
+    <!-- Fixed Progress Bar -->
+    <div class="progress-bar-wrap" id="progressBarWrap">
+      <div class="progress-bar-fill" id="heroBar"></div>
+    </div>
+
+    <main>
+      <!-- ── HERO SCROLL TRACK (400vh) ─────────────────────────────── -->
+      <section class="hero-track" id="hero">
+        <div class="hero-pinned-content" id="heroContent">
+          <div class="eyebrow-tag">
+            <span class="pulse-dot"></span>
+            <span>SCROLL-DRIVEN 3D CINEMATIC</span>
+          </div>
+
+          <h1 class="hero-title">
+            THE ANCIENT<br>
+            <span class="glow-word">DRACONIS</span>
+          </h1>
+
+          <p class="hero-description">
+            Born of stellar nebulae and primeval fire. Scroll down to command the 
+            264-frame evolution from upright celestial guardian to cosmic dragon sovereign.
+          </p>
+
+          <div class="evolution-phases">
+            <div class="evo-item active" id="phase1">
+              <span class="evo-idx">I</span>
+              <div class="evo-meta">
+                <b>PRIMORDIAL</b>
+                <span>Upright Starlight Form</span>
+              </div>
+            </div>
+            <div class="evo-item" id="phase2">
+              <span class="evo-idx">II</span>
+              <div class="evo-meta">
+                <b>IGNITION</b>
+                <span>Stellar Core Glow</span>
+              </div>
+            </div>
+            <div class="evo-item" id="phase3">
+              <span class="evo-idx">III</span>
+              <div class="evo-meta">
+                <b>ASCENSION</b>
+                <span>Galactic Wings Unfurl</span>
+              </div>
+            </div>
+            <div class="evo-item" id="phase4">
+              <span class="evo-idx">IV</span>
+              <div class="evo-meta">
+                <b>CELESTIAL</b>
+                <span>Planetary Ring Orbit</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="scroll-hint-bar">
+            <div class="mouse-scroller">
+              <div class="mouse-wheel"></div>
+            </div>
+            <span class="scroll-label">SCROLL DOWN TO EVOLVE</span>
+            <span class="scroll-arrow">↓</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── CONTENT WRAPPER (Slides up over the 3D model) ────────── -->
+      <div class="content-wrapper" id="contentWrapper">
+
+        <!-- ── SECTION 01 — ORIGIN & ANATOMY ─────────────────────── -->
+        <section class="section-origin" id="forms">
+          <div class="section-header">
+            <span class="section-tag">01 / GENESIS</span>
+            <h2 class="section-title">THE PRIMORDIAL<br><span class="glow-word">HUMANOID FORM</span></h2>
+            <p class="section-lede">
+              In its foundational state, the Draconis embodies equilibrium between ancient sentience 
+              and untamed astronomical energy.
+            </p>
+          </div>
+
+          <div class="origin-grid">
+            <div class="origin-stats-card">
+              <div class="card-glow"></div>
+              <h3>ANATOMICAL METRICS</h3>
+              <ul class="stats-table">
+                <li>
+                  <span class="stat-name">Stature</span>
+                  <span class="stat-value">3.2 METERS</span>
+                </li>
+                <li>
+                  <span class="stat-name">Scale Composition</span>
+                  <span class="stat-value">COMPRESSED STARLIGHT</span>
+                </li>
+                <li>
+                  <span class="stat-name">Visual Spectrum</span>
+                  <span class="stat-value">INFRARED TO GAMMA</span>
+                </li>
+                <li>
+                  <span class="stat-name">Internal Furnace</span>
+                  <span class="stat-value">STELLAR PLASMA CORE</span>
+                </li>
+                <li>
+                  <span class="stat-name">Gravitational Pull</span>
+                  <span class="stat-value">1.42 × 10¹⁴ N</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="origin-feature-card">
+              <div class="card-glow"></div>
+              <div class="card-badge">ANCIENT LORE</div>
+              <h4>FORGED IN COLLAPSING STARS</h4>
+              <p>
+                The crystalline armor plates absorb electromagnetic radiation, storing energy for the 
+                inevitable wing metamorphosis. Each step echoes across dimensions, vibrating at the harmonic 
+                resonance of cosmic birth.
+              </p>
+              <div class="rune-seal">✦ ◈ ⬡ ✦</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── SECTION 02 — THE METAMORPHOSIS ────────────────────── -->
+        <section class="section-transform" id="power">
+          <div class="section-header text-center">
+            <span class="section-tag">02 / METAMORPHOSIS</span>
+            <h2 class="section-title">FOUR PHASES OF<br><span class="glow-word">ASCENSION</span></h2>
+            <p class="section-lede center-block">
+              Observe how your scroll manipulates time itself across four distinct epochs of dragon transmutation.
+            </p>
+          </div>
+
+          <div class="transform-cards-grid">
+            <div class="transform-card">
+              <div class="tc-top">
+                <span class="tc-epoch">PHASE 01</span>
+                <span class="tc-symbol">◈</span>
+              </div>
+              <h3 class="tc-title">DORMANT STATE</h3>
+              <p class="tc-desc">
+                Scales locked in humanoid posture. Stellar plasma gathers within the spine in quiet preparation.
+              </p>
+              <div class="tc-footer">FRAMES 007 – 070</div>
+            </div>
+
+            <div class="transform-card">
+              <div class="tc-top">
+                <span class="tc-epoch">PHASE 02</span>
+                <span class="tc-symbol">✦</span>
+              </div>
+              <h3 class="tc-title">CORE IGNITION</h3>
+              <p class="tc-desc">
+                The chest opens into a miniature spiral galaxy. Gravitational rings begin to manifest in orbit.
+              </p>
+              <div class="tc-footer">FRAMES 071 – 140</div>
+            </div>
+
+            <div class="transform-card highlight-card">
+              <div class="tc-top">
+                <span class="tc-epoch">PHASE 03</span>
+                <span class="tc-symbol">⬡</span>
+              </div>
+              <h3 class="tc-title">WING SPREAD</h3>
+              <p class="tc-desc">
+                Cosmic membrane wings expand over 12 meters. Star systems shimmer across the wing tissue.
+              </p>
+              <div class="tc-footer">FRAMES 141 – 210</div>
+            </div>
+
+            <div class="transform-card">
+              <div class="tc-top">
+                <span class="tc-epoch">PHASE 04</span>
+                <span class="tc-symbol">🌌</span>
+              </div>
+              <h3 class="tc-title">CELESTIAL SOVEREIGN</h3>
+              <p class="tc-desc">
+                Planets and stellar dust orbit the body. The ancient dragon reigns supreme over the void.
+              </p>
+              <div class="tc-footer">FRAMES 211 – 270</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── SECTION 03 — BREATH OF POWER ──────────────────────── -->
+        <section class="section-power" id="cosmos">
+          <div class="power-layout">
+            <div class="power-text">
+              <span class="section-tag">03 / ARSENAL</span>
+              <h2 class="section-title">THE CELESTIAL<br><span class="glow-word">PLASMA BREATH</span></h2>
+              <p class="section-lede">
+                When threatened, the Draconis releases concentrated cosmic plasma from its stellar throat, 
+                capable of vaporizing rogue asteroids and kindling newborn protostars.
+              </p>
+
+              <div class="power-stats-row">
+                <div class="power-stat">
+                  <div class="pstat-val">18,500°K</div>
+                  <div class="pstat-lbl">Plasma Core Temp</div>
+                </div>
+                <div class="pstat-sep"></div>
+                <div class="power-stat">
+                  <div class="pstat-val">4.2 AU</div>
+                  <div class="pstat-lbl">Effective Reach</div>
+                </div>
+                <div class="pstat-sep"></div>
+                <div class="power-stat">
+                  <div class="pstat-val">INFINITE</div>
+                  <div class="pstat-lbl">Stellar Reservoir</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="power-visual-card">
+              <div class="cosmic-ring-visual">
+                <div class="ring r1"></div>
+                <div class="ring r2"></div>
+                <div class="core-plasma"></div>
+              </div>
+              <div class="power-visual-caption">STELLAR PLASMA CORE SIMULATION</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── SECTION 04 — COSMIC SPECIFICATIONS ────────────────── -->
+        <section class="section-cosmos">
+          <div class="section-header text-center">
+            <span class="section-tag">04 / ARCHITECTURE</span>
+            <h2 class="section-title">COSMIC SCALE<br><span class="glow-word">SYSTEMS</span></h2>
+            <p class="section-lede center-block">
+              Deconstructed components of the eternal dragon anatomy.
+            </p>
+          </div>
+
+          <div class="cosmos-features-grid">
+            <div class="feat-box">
+              <div class="feat-icon">🌌</div>
+              <h4>NEBULA WING MATRIX</h4>
+              <p>Stretched intergalactic dust bound by antimatter filaments, generating lift in true vacuum.</p>
+            </div>
+            <div class="feat-box">
+              <div class="feat-icon">💫</div>
+              <h4>PLANETARY RING ORBIT</h4>
+              <p>Debris from pulverized moons captured in gravitational equilibrium around the torso.</p>
+            </div>
+            <div class="feat-box">
+              <div class="feat-icon">⚡</div>
+              <h4>STELLAR PLATES</h4>
+              <p>Diamond-structured hyper-dense scales that deflect gamma ray bursts effortlessly.</p>
+            </div>
+            <div class="feat-box">
+              <div class="feat-icon">🔮</div>
+              <h4>GRAVITON HORNS</h4>
+              <p>Horns acting as sub-space antennae, receiving whispers from the origin of the cosmos.</p>
+            </div>
+            <div class="feat-box">
+              <div class="feat-icon">☄️</div>
+              <h4>COMET-TAIL WAKE</h4>
+              <p>A wake of glowing ionized dust left behind during hyper-dimensional transit.</p>
+            </div>
+            <div class="feat-box">
+              <div class="feat-icon">👁️</div>
+              <h4>CHRONO IRISES</h4>
+              <p>Twin glowing eyes perceiving future branch trajectories across parallel timelines.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── FOOTER ────────────────────────────────────────────── -->
+        <footer class="site-footer">
+          <div class="footer-top">
+            <div class="footer-logo">
+              <span class="brand-rune">✦</span>
+              <span class="brand-text">DRACONIS</span>
+            </div>
+            <p class="footer-quote">"Before time was recorded, the great beast cast stars into the black void."</p>
+            <div class="footer-nav">
+              <a href="#hero">Origin</a>
+              <a href="#forms">Metamorphosis</a>
+              <a href="#power">Power</a>
+              <a href="#cosmos">Cosmos</a>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <span>© 2026 DRACONIS — 3D SCROLL CINEMATIC EXPERIENCE</span>
+            <span>FRAMES 007 — 0270</span>
+          </div>
+        </footer>
+
+      </div>
+    </main>
+
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
