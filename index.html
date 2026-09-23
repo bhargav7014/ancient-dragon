@@ -3,356 +3,1155 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#04091a" />
-  <meta name="description" content="Witness the cosmic evolution of the Ancient Dragon — a scroll-driven 3D cinematic experience." />
+  <title>DRACONIS — The Ancient Dragon</title>
+  <meta name="description" content="A scroll-driven cinematic dragon evolution inspired by Junni and Ancient Dragon." />
+  
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <title>DRACONIS — Cosmic Dragon Lore</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@500;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ==========================================================================
+       RESET & BASE TOKENS (Junni Minimalist Dark Style)
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0a0a0a;
+      --fg: #ffffff;
+      --text-bright: #ffffff;
+      --text-sub: #e2e8f0;
+      --text-muted: #94a3b8;
+      --accent-glow: #38bdf8;
+      --border-subtle: rgba(255, 255, 255, 0.1);
+      --border-light: rgba(255, 255, 255, 0.25);
+      --font-display: 'Syne', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'Space Mono', monospace;
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    html {
+      background-color: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--fg);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ==========================================================================
+       TOP 1PX PROGRESS BAR
+       ========================================================================== */
+    #scrollProgress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: linear-gradient(90deg, #38bdf8, #ffffff, #818cf8);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
+      z-index: 1000;
+      pointer-events: none;
+      transition: width 0.08s linear;
+    }
+
+    /* ==========================================================================
+       PRELOADER / LOADING SCREEN
+       ========================================================================== */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background-color: #0a0a0a;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.9s var(--ease-out-expo), visibility 0.9s;
+    }
+
+    #loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loader-content {
+      width: min(340px, 80vw);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .loader-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      font-weight: 700;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      color: #fff;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+    }
+
+    .loader-bar-wrap {
+      width: 100%;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.12);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 1.25rem;
+    }
+
+    .loader-bar-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0%;
+      background: #ffffff;
+      box-shadow: 0 0 8px #ffffff;
+      transition: width 0.15s ease-out;
+    }
+
+    .loader-meta {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    /* ==========================================================================
+       FIXED MINIMAL NAVBAR (Junni Style)
+       ========================================================================== */
+    #navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(1.25rem, 4vw, 4rem);
+      z-index: 100;
+      pointer-events: auto;
+      background: linear-gradient(180deg, rgba(10, 10, 10, 0.9) 0%, rgba(10, 10, 10, 0) 100%);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .nav-brand {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #ffffff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+    }
+
+    .nav-brand-symbol {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--accent-glow);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: clamp(1.25rem, 2.5vw, 2.75rem);
+      list-style: none;
+    }
+
+    .nav-link {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0%;
+      height: 1px;
+      background: #fff;
+      transition: width 0.3s var(--ease-out-expo);
+    }
+
+    .nav-link:hover {
+      color: #ffffff;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-stage-badge {
+      display: none;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      color: var(--accent-glow);
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 4px 10px;
+      border-radius: 999px;
+      text-transform: uppercase;
+    }
+
+    /* ==========================================================================
+       FIXED CANVAS (Dragon Animation)
+       ========================================================================== */
+    #canvasWrap {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #dragonCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Ambient dark subtle vignette */
+    .canvas-vignette {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background: radial-gradient(circle at center, transparent 40%, rgba(10, 10, 10, 0.6) 80%, #0a0a0a 100%);
+    }
+
+    /* ==========================================================================
+       FIXED HUD (Stage & Frame Indicators)
+       ========================================================================== */
+    .hud-element {
+      position: fixed;
+      z-index: 50;
+      pointer-events: none;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-bright);
+      background: rgba(10, 10, 10, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    #hudStage {
+      bottom: clamp(1.25rem, 3.5vh, 2.5rem);
+      left: clamp(1.25rem, 4vw, 3.5rem);
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    #hudStage .stage-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent-glow);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent-glow);
+      animation: pulseDot 2s infinite ease-in-out;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 0.4; transform: scale(0.85); }
+      50% { opacity: 1; transform: scale(1.3); }
+    }
+
+    #hudFrame {
+      bottom: clamp(1.25rem, 3.5vh, 2.5rem);
+      right: clamp(1.25rem, 4vw, 3.5rem);
+      color: var(--accent-glow);
+    }
+
+    /* Scroll Hint Arrow */
+    #scrollHint {
+      position: fixed;
+      bottom: clamp(1.25rem, 3.5vh, 2.5rem);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 50;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      color: var(--text-bright);
+      text-transform: uppercase;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      background: rgba(10, 10, 10, 0.7);
+      backdrop-filter: blur(8px);
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    #scrollHint.hidden {
+      opacity: 0;
+      transform: translate(-50%, 14px);
+    }
+
+    .scroll-arrow {
+      width: 1px;
+      height: 18px;
+      background: rgba(255, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+      margin-top: 2px;
+    }
+
+    .scroll-arrow::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--accent-glow);
+      box-shadow: 0 0 6px var(--accent-glow);
+      animation: scrollLine 1.8s infinite cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    @keyframes scrollLine {
+      0% { transform: translateY(-100%); }
+      50% { transform: translateY(0); }
+      100% { transform: translateY(100%); }
+    }
+
+    /* ==========================================================================
+       SCROLL CONTAINER & SECTIONS
+       ========================================================================== */
+    #scrollContainer {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+    }
+
+    .section {
+      position: relative;
+      min-height: 120vh;
+      display: flex;
+      align-items: center;
+      padding: 0 clamp(1.5rem, 5vw, 4.5rem);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    /* Alternating desktop section alignments */
+    .section.align-center {
+      justify-content: center;
+      text-align: center;
+    }
+
+    .section.align-left {
+      justify-content: flex-start;
+      text-align: left;
+    }
+
+    .section.align-right {
+      justify-content: flex-end;
+      text-align: left;
+    }
+
+    .content-box {
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+      z-index: 20;
+    }
+
+    .section.align-center .content-box {
+      max-width: 860px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ==========================================================================
+       TYPOGRAPHY & LUMINOUS WORD REVEAL ANIMATIONS
+       ========================================================================== */
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: clamp(0.72rem, 1.2vw, 0.82rem);
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--accent-glow);
+      margin-bottom: 1.25rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    }
+
+    .eyebrow-line {
+      display: inline-block;
+      width: 24px;
+      height: 1px;
+      background: var(--accent-glow);
+      box-shadow: 0 0 6px var(--accent-glow);
+    }
+
+    .title-large {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 6.2vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.04;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 35px rgba(255, 255, 255, 0.4), 0 2px 14px rgba(0, 0, 0, 0.95);
+    }
+
+    .title-stage {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4.5vw, 3.6rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-bottom: 1.25rem;
+      text-shadow: 0 0 28px rgba(255, 255, 255, 0.4), 0 2px 12px rgba(0, 0, 0, 0.9);
+    }
+
+    .description {
+      font-family: var(--font-body);
+      font-size: clamp(0.95rem, 1.5vw, 1.12rem);
+      font-weight: 400;
+      line-height: 1.8;
+      color: var(--text-sub);
+      max-width: 460px;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.95);
+    }
+
+    .section.align-center .description {
+      max-width: 600px;
+    }
+
+    /* Word-by-word seamless luminous reveal engine */
+    .word-wrap {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: bottom;
+      margin-right: 0.26em;
+      padding: 0.05em 0.06em;
+    }
+
+    .word-inner {
+      display: inline-block;
+      transform: translateY(115%);
+      opacity: 0;
+      color: #ffffff;
+      transition: transform 0.85s var(--ease-out-expo), opacity 0.85s var(--ease-smooth);
+      will-change: transform, opacity;
+    }
+
+    .in-view .word-inner {
+      transform: translateY(0%);
+      opacity: 1;
+    }
+
+    .description .word-inner {
+      color: #cbd5e1;
+    }
+
+    .description.in-view .word-inner {
+      color: #f8fafc;
+    }
+
+    /* ==========================================================================
+       MOBILE OPTIMIZATIONS (Dragon Unobscured + Bottom Cards + Seamless Glow)
+       ========================================================================== */
+    @media (max-width: 768px) {
+      .section {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end !important;
+        align-items: center !important;
+        text-align: center !important;
+        padding: 0 1.25rem 5.5rem 1.25rem !important;
+      }
+
+      .section.align-center#hero {
+        justify-content: flex-end !important;
+        padding-bottom: 6rem !important;
+      }
+
+      .section.align-center#final {
+        justify-content: center !important;
+        padding-bottom: 5.5rem !important;
+      }
+
+      .content-box {
+        max-width: 100%;
+        background: rgba(10, 10, 10, 0.55);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 18px;
+        padding: 1.4rem 1.35rem 1.25rem 1.35rem;
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      }
+
+      .eyebrow {
+        justify-content: center;
+        font-size: 0.65rem;
+        margin-bottom: 0.65rem;
+      }
+
+      .title-large {
+        font-size: clamp(1.85rem, 7.5vw, 2.6rem);
+        margin-bottom: 0.75rem;
+      }
+
+      .title-stage {
+        font-size: clamp(1.6rem, 6vw, 2.1rem);
+        margin-bottom: 0.65rem;
+      }
+
+      .description {
+        font-size: 0.88rem;
+        line-height: 1.6;
+        color: #f1f5f9; /* Extra bright and readable on mobile */
+      }
+
+      /* Navbar on mobile: show compact stage badge, hide full link list */
+      .nav-links {
+        display: none;
+      }
+      .nav-stage-badge {
+        display: block;
+      }
+
+      /* Mobile HUD positioning and styling */
+      .hud-element {
+        font-size: 0.62rem;
+        padding: 3px 9px;
+      }
+      #hudStage {
+        bottom: 0.85rem;
+        left: 0.85rem;
+      }
+      #hudFrame {
+        bottom: 0.85rem;
+        right: 0.85rem;
+      }
+      #scrollHint {
+        display: none; /* Hide scroll hint on mobile to avoid screen crowding with HUD */
+      }
+    }
+
+    /* ==========================================================================
+       CLEAN PILL CTA BUTTON (Junni Minimal Fill)
+       ========================================================================== */
+    .pill-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.85rem;
+      padding: 1.05rem 2.75rem;
+      margin-top: 2.25rem;
+      border: 1px solid var(--border-light);
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #ffffff;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.4s ease, color 0.4s ease, transform 0.3s ease, box-shadow 0.4s ease;
+      z-index: 1;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    }
+
+    .pill-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: #ffffff;
+      transform: translateY(101%);
+      transition: transform 0.45s var(--ease-out-expo);
+      z-index: -1;
+      border-radius: 9999px;
+    }
+
+    .pill-btn:hover {
+      border-color: #ffffff;
+      color: #0a0a0a;
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.35);
+    }
+
+    .pill-btn:hover::before {
+      transform: translateY(0%);
+    }
+
+    .pill-btn-icon {
+      font-size: 0.85rem;
+      transition: transform 0.35s ease;
+    }
+
+    .pill-btn:hover .pill-btn-icon {
+      transform: translateX(4px);
+    }
+
+    /* Minimal footer line */
+    .site-footer {
+      padding: 3rem clamp(1.5rem, 5vw, 4rem) 6rem clamp(1.5rem, 5vw, 4rem);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-subtle);
+      position: relative;
+      z-index: 20;
+      background: var(--bg);
+    }
+
+    @media (max-width: 600px) {
+      .site-footer {
+        flex-direction: column;
+        gap: 0.75rem;
+        text-align: center;
+        padding-bottom: 5.5rem;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div id="app">
 
-    <!-- ── PRELOADER ─────────────────────────────────────────────── -->
-    <div class="loader" id="loader">
-      <div class="loader-rune">✦</div>
-      <div class="loader-mark">DRACONIS</div>
-      <div class="loader-track"><span id="loaderBar"></span></div>
-      <div class="loader-copy" id="loaderCopy">Awakening the celestial beast… 0%</div>
-    </div>
+  <!-- Top 1px Scroll Progress Bar -->
+  <div id="scrollProgress"></div>
 
-    <!-- ── FIXED 3D CANVAS BACKGROUND ────────────────────────────── -->
-    <div class="canvas-container" id="canvasContainer">
-      <canvas id="dragonCanvas" aria-label="Ancient cosmic dragon 3D animation"></canvas>
-      <div class="canvas-vignette"></div>
-      <div class="canvas-glow"></div>
-    </div>
-
-    <!-- ── HEADER NAVIGATION ─────────────────────────────────────── -->
-    <header class="nav" id="nav">
-      <div class="brand">
-        <span class="brand-rune">✦</span>
-        <span class="brand-text">DRACONIS</span>
+  <!-- Preloader Screen -->
+  <div id="loader">
+    <div class="loader-content">
+      <div class="loader-title">DRACONIS</div>
+      <div class="loader-bar-wrap">
+        <div class="loader-bar-fill" id="loaderFill"></div>
       </div>
-      <nav class="nav-links">
-        <a href="#hero" class="nav-link active">Origin</a>
-        <a href="#forms" class="nav-link">Forms</a>
-        <a href="#power" class="nav-link">Power</a>
-        <a href="#cosmos" class="nav-link">Cosmos</a>
-      </nav>
-      <a href="#forms" class="nav-cta">Explore Lore</a>
-    </header>
-
-    <!-- ── FIXED OVERLAY CONTROLS (Hero Phase & Frame Readout) ────── -->
-    <div class="hero-overlay" id="heroOverlay">
-      <!-- Live Stage Indicator -->
-      <div class="stage-indicator">
-        <span class="stage-pill" id="stagePill">STAGE 01</span>
-        <span class="stage-title" id="stageTitle">PRIMORDIAL GUARDIAN</span>
-      </div>
-
-      <!-- Live Frame Counter & Hero Progress -->
-      <div class="frame-counter">
-        <div class="frame-num-wrap">
-          <span class="frame-cur" id="frameNumber">007</span>
-          <span class="frame-sep">/</span>
-          <span class="frame-tot">270</span>
-        </div>
-        <div class="frame-sub">SCROLL CONTROLLED</div>
+      <div class="loader-meta">
+        <span>PRELOADING FRAMES</span>
+        <span id="loaderPercent">0%</span>
       </div>
     </div>
-
-    <!-- Fixed Progress Bar -->
-    <div class="progress-bar-wrap" id="progressBarWrap">
-      <div class="progress-bar-fill" id="heroBar"></div>
-    </div>
-
-    <main>
-      <!-- ── HERO SCROLL TRACK (400vh) ─────────────────────────────── -->
-      <section class="hero-track" id="hero">
-        <div class="hero-pinned-content" id="heroContent">
-          <div class="eyebrow-tag">
-            <span class="pulse-dot"></span>
-            <span>SCROLL-DRIVEN 3D CINEMATIC</span>
-          </div>
-
-          <h1 class="hero-title">
-            THE ANCIENT<br>
-            <span class="glow-word">DRACONIS</span>
-          </h1>
-
-          <p class="hero-description">
-            Born of stellar nebulae and primeval fire. Scroll down to command the 
-            264-frame evolution from upright celestial guardian to cosmic dragon sovereign.
-          </p>
-
-          <div class="evolution-phases">
-            <div class="evo-item active" id="phase1">
-              <span class="evo-idx">I</span>
-              <div class="evo-meta">
-                <b>PRIMORDIAL</b>
-                <span>Upright Starlight Form</span>
-              </div>
-            </div>
-            <div class="evo-item" id="phase2">
-              <span class="evo-idx">II</span>
-              <div class="evo-meta">
-                <b>IGNITION</b>
-                <span>Stellar Core Glow</span>
-              </div>
-            </div>
-            <div class="evo-item" id="phase3">
-              <span class="evo-idx">III</span>
-              <div class="evo-meta">
-                <b>ASCENSION</b>
-                <span>Galactic Wings Unfurl</span>
-              </div>
-            </div>
-            <div class="evo-item" id="phase4">
-              <span class="evo-idx">IV</span>
-              <div class="evo-meta">
-                <b>CELESTIAL</b>
-                <span>Planetary Ring Orbit</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="scroll-hint-bar">
-            <div class="mouse-scroller">
-              <div class="mouse-wheel"></div>
-            </div>
-            <span class="scroll-label">SCROLL DOWN TO EVOLVE</span>
-            <span class="scroll-arrow">↓</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- ── CONTENT WRAPPER (Slides up over the 3D model) ────────── -->
-      <div class="content-wrapper" id="contentWrapper">
-
-        <!-- ── SECTION 01 — ORIGIN & ANATOMY ─────────────────────── -->
-        <section class="section-origin" id="forms">
-          <div class="section-header">
-            <span class="section-tag">01 / GENESIS</span>
-            <h2 class="section-title">THE PRIMORDIAL<br><span class="glow-word">HUMANOID FORM</span></h2>
-            <p class="section-lede">
-              In its foundational state, the Draconis embodies equilibrium between ancient sentience 
-              and untamed astronomical energy.
-            </p>
-          </div>
-
-          <div class="origin-grid">
-            <div class="origin-stats-card">
-              <div class="card-glow"></div>
-              <h3>ANATOMICAL METRICS</h3>
-              <ul class="stats-table">
-                <li>
-                  <span class="stat-name">Stature</span>
-                  <span class="stat-value">3.2 METERS</span>
-                </li>
-                <li>
-                  <span class="stat-name">Scale Composition</span>
-                  <span class="stat-value">COMPRESSED STARLIGHT</span>
-                </li>
-                <li>
-                  <span class="stat-name">Visual Spectrum</span>
-                  <span class="stat-value">INFRARED TO GAMMA</span>
-                </li>
-                <li>
-                  <span class="stat-name">Internal Furnace</span>
-                  <span class="stat-value">STELLAR PLASMA CORE</span>
-                </li>
-                <li>
-                  <span class="stat-name">Gravitational Pull</span>
-                  <span class="stat-value">1.42 × 10¹⁴ N</span>
-                </li>
-              </ul>
-            </div>
-
-            <div class="origin-feature-card">
-              <div class="card-glow"></div>
-              <div class="card-badge">ANCIENT LORE</div>
-              <h4>FORGED IN COLLAPSING STARS</h4>
-              <p>
-                The crystalline armor plates absorb electromagnetic radiation, storing energy for the 
-                inevitable wing metamorphosis. Each step echoes across dimensions, vibrating at the harmonic 
-                resonance of cosmic birth.
-              </p>
-              <div class="rune-seal">✦ ◈ ⬡ ✦</div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ── SECTION 02 — THE METAMORPHOSIS ────────────────────── -->
-        <section class="section-transform" id="power">
-          <div class="section-header text-center">
-            <span class="section-tag">02 / METAMORPHOSIS</span>
-            <h2 class="section-title">FOUR PHASES OF<br><span class="glow-word">ASCENSION</span></h2>
-            <p class="section-lede center-block">
-              Observe how your scroll manipulates time itself across four distinct epochs of dragon transmutation.
-            </p>
-          </div>
-
-          <div class="transform-cards-grid">
-            <div class="transform-card">
-              <div class="tc-top">
-                <span class="tc-epoch">PHASE 01</span>
-                <span class="tc-symbol">◈</span>
-              </div>
-              <h3 class="tc-title">DORMANT STATE</h3>
-              <p class="tc-desc">
-                Scales locked in humanoid posture. Stellar plasma gathers within the spine in quiet preparation.
-              </p>
-              <div class="tc-footer">FRAMES 007 – 070</div>
-            </div>
-
-            <div class="transform-card">
-              <div class="tc-top">
-                <span class="tc-epoch">PHASE 02</span>
-                <span class="tc-symbol">✦</span>
-              </div>
-              <h3 class="tc-title">CORE IGNITION</h3>
-              <p class="tc-desc">
-                The chest opens into a miniature spiral galaxy. Gravitational rings begin to manifest in orbit.
-              </p>
-              <div class="tc-footer">FRAMES 071 – 140</div>
-            </div>
-
-            <div class="transform-card highlight-card">
-              <div class="tc-top">
-                <span class="tc-epoch">PHASE 03</span>
-                <span class="tc-symbol">⬡</span>
-              </div>
-              <h3 class="tc-title">WING SPREAD</h3>
-              <p class="tc-desc">
-                Cosmic membrane wings expand over 12 meters. Star systems shimmer across the wing tissue.
-              </p>
-              <div class="tc-footer">FRAMES 141 – 210</div>
-            </div>
-
-            <div class="transform-card">
-              <div class="tc-top">
-                <span class="tc-epoch">PHASE 04</span>
-                <span class="tc-symbol">🌌</span>
-              </div>
-              <h3 class="tc-title">CELESTIAL SOVEREIGN</h3>
-              <p class="tc-desc">
-                Planets and stellar dust orbit the body. The ancient dragon reigns supreme over the void.
-              </p>
-              <div class="tc-footer">FRAMES 211 – 270</div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ── SECTION 03 — BREATH OF POWER ──────────────────────── -->
-        <section class="section-power" id="cosmos">
-          <div class="power-layout">
-            <div class="power-text">
-              <span class="section-tag">03 / ARSENAL</span>
-              <h2 class="section-title">THE CELESTIAL<br><span class="glow-word">PLASMA BREATH</span></h2>
-              <p class="section-lede">
-                When threatened, the Draconis releases concentrated cosmic plasma from its stellar throat, 
-                capable of vaporizing rogue asteroids and kindling newborn protostars.
-              </p>
-
-              <div class="power-stats-row">
-                <div class="power-stat">
-                  <div class="pstat-val">18,500°K</div>
-                  <div class="pstat-lbl">Plasma Core Temp</div>
-                </div>
-                <div class="pstat-sep"></div>
-                <div class="power-stat">
-                  <div class="pstat-val">4.2 AU</div>
-                  <div class="pstat-lbl">Effective Reach</div>
-                </div>
-                <div class="pstat-sep"></div>
-                <div class="power-stat">
-                  <div class="pstat-val">INFINITE</div>
-                  <div class="pstat-lbl">Stellar Reservoir</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="power-visual-card">
-              <div class="cosmic-ring-visual">
-                <div class="ring r1"></div>
-                <div class="ring r2"></div>
-                <div class="core-plasma"></div>
-              </div>
-              <div class="power-visual-caption">STELLAR PLASMA CORE SIMULATION</div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ── SECTION 04 — COSMIC SPECIFICATIONS ────────────────── -->
-        <section class="section-cosmos">
-          <div class="section-header text-center">
-            <span class="section-tag">04 / ARCHITECTURE</span>
-            <h2 class="section-title">COSMIC SCALE<br><span class="glow-word">SYSTEMS</span></h2>
-            <p class="section-lede center-block">
-              Deconstructed components of the eternal dragon anatomy.
-            </p>
-          </div>
-
-          <div class="cosmos-features-grid">
-            <div class="feat-box">
-              <div class="feat-icon">🌌</div>
-              <h4>NEBULA WING MATRIX</h4>
-              <p>Stretched intergalactic dust bound by antimatter filaments, generating lift in true vacuum.</p>
-            </div>
-            <div class="feat-box">
-              <div class="feat-icon">💫</div>
-              <h4>PLANETARY RING ORBIT</h4>
-              <p>Debris from pulverized moons captured in gravitational equilibrium around the torso.</p>
-            </div>
-            <div class="feat-box">
-              <div class="feat-icon">⚡</div>
-              <h4>STELLAR PLATES</h4>
-              <p>Diamond-structured hyper-dense scales that deflect gamma ray bursts effortlessly.</p>
-            </div>
-            <div class="feat-box">
-              <div class="feat-icon">🔮</div>
-              <h4>GRAVITON HORNS</h4>
-              <p>Horns acting as sub-space antennae, receiving whispers from the origin of the cosmos.</p>
-            </div>
-            <div class="feat-box">
-              <div class="feat-icon">☄️</div>
-              <h4>COMET-TAIL WAKE</h4>
-              <p>A wake of glowing ionized dust left behind during hyper-dimensional transit.</p>
-            </div>
-            <div class="feat-box">
-              <div class="feat-icon">👁️</div>
-              <h4>CHRONO IRISES</h4>
-              <p>Twin glowing eyes perceiving future branch trajectories across parallel timelines.</p>
-            </div>
-          </div>
-        </section>
-
-        <!-- ── FOOTER ────────────────────────────────────────────── -->
-        <footer class="site-footer">
-          <div class="footer-top">
-            <div class="footer-logo">
-              <span class="brand-rune">✦</span>
-              <span class="brand-text">DRACONIS</span>
-            </div>
-            <p class="footer-quote">"Before time was recorded, the great beast cast stars into the black void."</p>
-            <div class="footer-nav">
-              <a href="#hero">Origin</a>
-              <a href="#forms">Metamorphosis</a>
-              <a href="#power">Power</a>
-              <a href="#cosmos">Cosmos</a>
-            </div>
-          </div>
-          <div class="footer-bottom">
-            <span>© 2026 DRACONIS — 3D SCROLL CINEMATIC EXPERIENCE</span>
-            <span>FRAMES 007 — 0270</span>
-          </div>
-        </footer>
-
-      </div>
-    </main>
-
   </div>
-  <script type="module" src="/src/main.js"></script>
+
+  <!-- Fixed Minimal Navbar -->
+  <header id="navbar">
+    <a href="#hero" class="nav-brand">
+      <span class="nav-brand-symbol"></span>
+      <span>DRACONIS</span>
+    </a>
+    <div class="nav-stage-badge" id="navStageBadge">STAGE 01</div>
+    <ul class="nav-links">
+      <li><a href="#stage1" class="nav-link">Primordial</a></li>
+      <li><a href="#stage2" class="nav-link">Ignition</a></li>
+      <li><a href="#stage3" class="nav-link">Ascension</a></li>
+      <li><a href="#stage4" class="nav-link">Sovereign</a></li>
+    </ul>
+  </header>
+
+  <!-- Fixed HUD Info -->
+  <div class="hud-element" id="hudStage">
+    <span class="stage-dot"></span>
+    <span id="hudStageLabel">STAGE 01 // PRIMORDIAL</span>
+  </div>
+
+  <div class="hud-element" id="hudFrame">
+    <span id="hudFrameLabel">FRAME [ 007 / 270 ]</span>
+  </div>
+
+  <!-- Scroll Hint Arrow -->
+  <div id="scrollHint">
+    <span>SCROLL TO EVOLVE</span>
+    <div class="scroll-arrow"></div>
+  </div>
+
+  <!-- Fixed Background Canvas -->
+  <div id="canvasWrap">
+    <canvas id="dragonCanvas" aria-label="Ancient Cosmic Dragon Scroll Animation"></canvas>
+  </div>
+  <div class="canvas-vignette"></div>
+
+  <!-- Scroll-driven Content Sections -->
+  <main id="scrollContainer">
+
+    <!-- 1. HERO (Center) -->
+    <section class="section align-center" id="hero">
+      <div class="content-box">
+        <div class="eyebrow" data-reveal>
+          <span class="eyebrow-line"></span>
+          <span>ANCIENT COSMIC MANIFESTATION</span>
+          <span class="eyebrow-line"></span>
+        </div>
+        <h1 class="title-large" data-reveal>
+          THE ANCIENT DRACONIS
+        </h1>
+        <p class="description" data-reveal>
+          Born of deep stellar nebulae and celestial fire. Scroll down to command the 264-frame continuous evolution from primeval starlight guardian to sovereign cosmic dragon.
+        </p>
+      </div>
+    </section>
+
+    <!-- 2. Stage 01 (Left) - Frames 7 to 70 -->
+    <section class="section align-left" id="stage1">
+      <div class="content-box">
+        <div class="eyebrow" data-reveal>
+          <span>[ 01 // ORIGIN ]</span>
+          <span class="eyebrow-line"></span>
+          <span>FRAMES 007–070</span>
+        </div>
+        <h2 class="title-stage" data-reveal>
+          Primordial Form
+        </h2>
+        <p class="description" data-reveal>
+          Before galaxies fully coalesced, the entity slumbered in crystalline stasis. An upright humanoid silhouette harbors ancient furnace cores within an unyielding celestial shell.
+        </p>
+      </div>
+    </section>
+
+    <!-- 3. Stage 02 (Right) - Frames 71 to 140 -->
+    <section class="section align-right" id="stage2">
+      <div class="content-box">
+        <div class="eyebrow" data-reveal>
+          <span>[ 02 // AWAKENING ]</span>
+          <span class="eyebrow-line"></span>
+          <span>FRAMES 071–140</span>
+        </div>
+        <h2 class="title-stage" data-reveal>
+          Core Ignition
+        </h2>
+        <p class="description" data-reveal>
+          Sub-atomic resonance shatters the outer mantle. Blinding thermal energy surges through stellar veins, awakening millenia of dormant astral breath and unleashing primeval heat.
+        </p>
+      </div>
+    </section>
+
+    <!-- 4. Stage 03 (Left) - Frames 141 to 210 -->
+    <section class="section align-left" id="stage3">
+      <div class="content-box">
+        <div class="eyebrow" data-reveal>
+          <span>[ 03 // EXPANSION ]</span>
+          <span class="eyebrow-line"></span>
+          <span>FRAMES 141–210</span>
+        </div>
+        <h2 class="title-stage" data-reveal>
+          Wing Spread
+        </h2>
+        <p class="description" data-reveal>
+          Ethereal wings rupture the spacetime fabric, casting auroral shockwaves across the abyss. The creature breaks planetary gravity in sovereign ascent toward the void.
+        </p>
+      </div>
+    </section>
+
+    <!-- 5. Stage 04 (Right) - Frames 211 to 270 -->
+    <section class="section align-right" id="stage4">
+      <div class="content-box">
+        <div class="eyebrow" data-reveal>
+          <span>[ 04 // APOTHEOSIS ]</span>
+          <span class="eyebrow-line"></span>
+          <span>FRAMES 211–270</span>
+        </div>
+        <h2 class="title-stage" data-reveal>
+          Celestial Sovereign
+        </h2>
+        <p class="description" data-reveal>
+          Total transcendental metamorphosis. The ancient wyrm commands galaxies and cosmic winds — ruler of the boundless void and eternal guardian of astral cycles.
+        </p>
+      </div>
+    </section>
+
+    <!-- 6. FINAL CTA (Center) -->
+    <section class="section align-center" id="final">
+      <div class="content-box">
+        <div class="eyebrow" data-reveal>
+          <span class="eyebrow-line"></span>
+          <span>ASCENSION COMPLETE</span>
+          <span class="eyebrow-line"></span>
+        </div>
+        <h2 class="title-large" data-reveal>
+          ENTER THE VOID
+        </h2>
+        <p class="description" data-reveal>
+          The metamorphosis is fulfilled. You have traversed the full continuum of ancient starlight. Step through the gate of cosmic remembrance.
+        </p>
+        <a href="#hero" class="pill-btn" id="ctaBtn" data-reveal>
+          <span>Experience the Void</span>
+          <span class="pill-btn-icon">→</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <span>DRACONIS © 2026 // SCROLL CINEMATIC</span>
+    <span>INSPIRED BY JUNNI & ANCIENT DRAGON</span>
+    <span>ALL FRAMES RENDERED REALTIME</span>
+  </footer>
+
+  <!-- ==========================================================================
+       SCRIPTS: PRELOADING, CANVAS ENGINE, WORD REVEALS & SCROLL SYNC
+       ========================================================================== -->
+  <script>
+    (function() {
+      'use strict';
+
+      // ── Configuration ──────────────────────────────────────────────────────
+      const START_FRAME = 7;
+      const END_FRAME = 270;
+      const TOTAL_FRAMES = END_FRAME - START_FRAME + 1; // 264 frames
+
+      // ── DOM Elements ───────────────────────────────────────────────────────
+      const canvas = document.getElementById('dragonCanvas');
+      const ctx = canvas.getContext('2d', { alpha: false });
+      const scrollProgress = document.getElementById('scrollProgress');
+      const scrollHint = document.getElementById('scrollHint');
+      const loader = document.getElementById('loader');
+      const loaderFill = document.getElementById('loaderFill');
+      const loaderPercent = document.getElementById('loaderPercent');
+      const hudStageLabel = document.getElementById('hudStageLabel');
+      const hudFrameLabel = document.getElementById('hudFrameLabel');
+      const navStageBadge = document.getElementById('navStageBadge');
+
+      // ── Image Preload State ────────────────────────────────────────────────
+      const frameImages = new Array(TOTAL_FRAMES);
+      let loadedImagesCount = 0;
+      let currentFrameIndex = 0;
+      let targetFrameIndex = 0;
+      let animationFrameId = null;
+
+      // Stage Definitions mapped to frame ranges
+      const STAGES = [
+        { name: 'STAGE 01 // PRIMORDIAL FORM', shortName: 'STAGE 01', min: 7, max: 70 },
+        { name: 'STAGE 02 // CORE IGNITION', shortName: 'STAGE 02', min: 71, max: 140 },
+        { name: 'STAGE 03 // WING SPREAD', shortName: 'STAGE 03', min: 141, max: 210 },
+        { name: 'STAGE 04 // CELESTIAL SOVEREIGN', shortName: 'STAGE 04', min: 211, max: 270 }
+      ];
+
+      // File path generator with multi-pattern fallback
+      function getFramePath(frameNumber) {
+        const pad4 = String(frameNumber).padStart(4, '0');
+        // Primary location in current project: frames/frame_0007.jpg
+        return `frames/frame_${pad4}.jpg`;
+      }
+
+      function getFallbackFramePath(frameNumber) {
+        const pad3 = String(frameNumber).padStart(3, '0');
+        return `frames/frame_${pad3}.png`;
+      }
+
+      // ── Canvas Resize & High-DPI Handling ──────────────────────────────────
+      function resizeCanvas() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+
+        canvas.width = Math.floor(w * dpr);
+        canvas.height = Math.floor(h * dpr);
+
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        drawFrame(Math.round(currentFrameIndex));
+      }
+
+      // ── Frame Rendering (object-fit: contain + mobile golden-ratio framing) ──
+      function drawFrame(index) {
+        const clampedIndex = Math.max(0, Math.min(TOTAL_FRAMES - 1, index));
+        const img = frameImages[clampedIndex];
+
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+
+        // Clear background with pure dark #0a0a0a
+        ctx.fillStyle = '#0a0a0a';
+        ctx.fillRect(0, 0, w, h);
+
+        if (!img || !img.complete || img.naturalWidth === 0) {
+          // If the requested frame is not yet fully ready, find nearest loaded frame
+          let fallbackImg = null;
+          for (let offset = 1; offset < TOTAL_FRAMES; offset++) {
+            const prev = clampedIndex - offset;
+            if (prev >= 0 && frameImages[prev]?.complete && frameImages[prev].naturalWidth > 0) {
+              fallbackImg = frameImages[prev];
+              break;
+            }
+            const next = clampedIndex + offset;
+            if (next < TOTAL_FRAMES && frameImages[next]?.complete && frameImages[next].naturalWidth > 0) {
+              fallbackImg = frameImages[next];
+              break;
+            }
+          }
+          if (fallbackImg) {
+            renderImageContain(fallbackImg, w, h);
+          }
+          return;
+        }
+
+        renderImageContain(img, w, h);
+      }
+
+      function renderImageContain(img, w, h) {
+        const iw = img.naturalWidth || 1280;
+        const ih = img.naturalHeight || 720;
+
+        const isMobilePortrait = w < 768 && h > w;
+
+        // In mobile portrait, scale nicely and position the dragon centered at y ~ 28%
+        // so the entire dragon is completely visible and prominent above the bottom caption cards!
+        const scale = isMobilePortrait
+          ? Math.min((w * 0.98) / iw, (h * 0.44) / ih)
+          : Math.min(w / iw, h / ih);
+
+        const dw = iw * scale;
+        const dh = ih * scale;
+        const dx = (w - dw) / 2;
+        const dy = isMobilePortrait ? (h * 0.28 - dh / 2) : (h - dh) / 2;
+
+        ctx.drawImage(img, dx, dy, dw, dh);
+      }
+
+      // ── Preloading Engine ──────────────────────────────────────────────────
+      function preloadImages() {
+        let completed = 0;
+
+        for (let i = 0; i < TOTAL_FRAMES; i++) {
+          const frameNum = START_FRAME + i;
+          const img = new Image();
+
+          img.onload = () => {
+            frameImages[i] = img;
+            completed++;
+            updatePreloader(completed);
+          };
+
+          img.onerror = () => {
+            // Try fallback png or alternate relative path
+            const fallback = new Image();
+            fallback.onload = () => {
+              frameImages[i] = fallback;
+              completed++;
+              updatePreloader(completed);
+            };
+            fallback.onerror = () => {
+              // Mark complete so preloader doesn't freeze
+              completed++;
+              updatePreloader(completed);
+            };
+            fallback.src = getFallbackFramePath(frameNum);
+          };
+
+          img.src = getFramePath(frameNum);
+        }
+      }
+
+      function updatePreloader(completed) {
+        const percent = Math.min(100, Math.floor((completed / TOTAL_FRAMES) * 100));
+        loaderFill.style.width = percent + '%';
+        loaderPercent.textContent = percent + '%';
+
+        // When all or minimum critical frames loaded, reveal site
+        if (completed >= TOTAL_FRAMES || (completed >= 30 && percent >= 98)) {
+          setTimeout(() => {
+            loader.classList.add('hidden');
+            resizeCanvas();
+            drawFrame(0);
+          }, 350);
+        }
+      }
+
+      // ── Smooth Animation & Lerping Loop ───────────────────────────────────
+      function renderLoop() {
+        // Smooth linear interpolation towards target frame
+        const delta = targetFrameIndex - currentFrameIndex;
+        if (Math.abs(delta) > 0.001) {
+          currentFrameIndex += delta * 0.22;
+          drawFrame(Math.round(currentFrameIndex));
+        }
+
+        animationFrameId = requestAnimationFrame(renderLoop);
+      }
+
+      // ── Scroll Handling & Frame Mapping ───────────────────────────────────
+      function onScroll() {
+        const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+        const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        const progress = Math.max(0, Math.min(1, scrollY / maxScroll));
+
+        // 1. Top progress bar
+        scrollProgress.style.width = (progress * 100) + '%';
+
+        // 2. Hide scroll hint on first scroll
+        if (scrollY > 40) {
+          scrollHint.classList.add('hidden');
+        } else {
+          scrollHint.classList.remove('hidden');
+        }
+
+        // 3. Map scrollY directly to frame index:
+        // frameIndex = Math.floor((scrollY / maxScroll) * totalFrames)
+        targetFrameIndex = Math.min(TOTAL_FRAMES - 1, Math.floor(progress * TOTAL_FRAMES));
+
+        // 4. Update HUD
+        const currentAbsoluteFrame = START_FRAME + Math.round(targetFrameIndex);
+        const padFrame = String(currentAbsoluteFrame).padStart(3, '0');
+        hudFrameLabel.textContent = `FRAME [ ${padFrame} / 270 ]`;
+
+        // Update Stage HUD & Navbar Mobile Badge
+        for (let s of STAGES) {
+          if (currentAbsoluteFrame >= s.min && currentAbsoluteFrame <= s.max) {
+            hudStageLabel.textContent = s.name;
+            if (navStageBadge) {
+              navStageBadge.textContent = s.shortName;
+            }
+            break;
+          }
+        }
+      }
+
+      // ── Word-by-Word Scroll Reveal Engine (Luminous Ethereal Style) ────────
+      function initWordReveals() {
+        const revealElements = document.querySelectorAll('[data-reveal]');
+
+        revealElements.forEach((el) => {
+          if (el.dataset.revealed) return;
+
+          // Process text nodes for titles and descriptions
+          if (!el.classList.contains('pill-btn') && !el.classList.contains('eyebrow')) {
+            const rawText = el.innerText.trim();
+            const words = rawText.split(/\s+/);
+
+            el.innerHTML = words.map((word, idx) => {
+              return `<span class="word-wrap"><span class="word-inner" style="transition-delay: ${idx * 0.028}s">${word}</span></span>`;
+            }).join(' ');
+          } else if (el.classList.contains('eyebrow')) {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(14px)';
+            el.style.transition = 'opacity 0.75s var(--ease-out-expo), transform 0.75s var(--ease-out-expo)';
+          } else if (el.classList.contains('pill-btn')) {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.75s var(--ease-out-expo), transform 0.75s var(--ease-out-expo)';
+          }
+
+          el.dataset.revealed = 'true';
+        });
+
+        // Setup IntersectionObserver with smooth early triggering
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in-view');
+              if (entry.target.classList.contains('eyebrow') || entry.target.classList.contains('pill-btn')) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+              }
+            } else {
+              // Only reset when scrolled well out of view above to prevent mobile jitter
+              if (entry.boundingClientRect.top > window.innerHeight + 80) {
+                entry.target.classList.remove('in-view');
+                if (entry.target.classList.contains('eyebrow') || entry.target.classList.contains('pill-btn')) {
+                  entry.target.style.opacity = '0';
+                  entry.target.style.transform = 'translateY(14px)';
+                }
+              }
+            }
+          });
+        }, {
+          threshold: 0.08,
+          rootMargin: '0px 0px -20px 0px'
+        });
+
+        revealElements.forEach(el => observer.observe(el));
+      }
+
+      // ── Event Listeners & Boot ────────────────────────────────────────────
+      window.addEventListener('resize', resizeCanvas, { passive: true });
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      // Initialize
+      document.addEventListener('DOMContentLoaded', () => {
+        resizeCanvas();
+        initWordReveals();
+        preloadImages();
+        renderLoop();
+        onScroll();
+      });
+
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        resizeCanvas();
+        initWordReveals();
+        preloadImages();
+        renderLoop();
+        onScroll();
+      }
+
+    })();
+  </script>
 </body>
 </html>
