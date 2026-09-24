@@ -1,3 +1,4 @@
+.next
 node_modules
 dist
 dist-ssr
@@ -6,3 +7,4 @@ dist-ssr
 .env.*
 .DS_Store
 Thumbs.db
+
